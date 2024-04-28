@@ -2,8 +2,13 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: locust-exporter-monitor
+  name: locust-monitor
+  labels:
+    app.kubernetes.io/part-of: kube-prometheus
 spec:
+  namespaceSelector:
+    matchNames:
+      - monitoring
   selector:
     matchLabels:
       app: loadgenerator
