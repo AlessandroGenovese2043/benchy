@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: benchy-app
+  labels:
+    name: benchy-app

@@ -8,5 +8,10 @@ class User(HttpUser):
         self.client.get("/cpu?n=30")
 
     @task
+    def intensive_load(self):
+        self.client.get("/cpuintensive?n=30")
+
+    @task
     def memory_load(self):
-         self.client.get("/mem?size=10000000")
+         self.client.get("/mem?size=1000")
+

@@ -53,7 +53,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: quay.io/massigollo/benchy:load
+          image: alegeno/docker_loadgen:latest
           imagePullPolicy: Always
           env:
             - name: USERS
@@ -87,4 +87,12 @@ data:
       
       @task
       def cpu_load(self):
-        self.client.get("/cpuintensive?n=30")
+          self.client.get("/cpu?n=30")
+  
+      @task
+      def intensive_load(self):
+          self.client.get("/cpuintensive?n=30")
+  
+      @task
+      def memory_load(self):
+          self.client.get("/mem?size=1000")
