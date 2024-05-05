@@ -1,11 +1,20 @@
+global:
+  evaluation_interval: 30s
 scrape_configs:
-  - job_name: cadvisor
+  - job_name: querier
     scrape_interval: 30s
     static_configs:
       - targets:
-          - cadvisor:8080
-  - job_name: locust-exporter
-    scrape_interval: 10s
+          - querier-service:50055
+  #- job_name: locust-exporter
+  #  scrape_interval: 10s
+  #  static_configs:
+  #    - targets:
+  #        - locust-exporter:9646
+  - job_name: benchy
+    scrape_interval: 30s
     static_configs:
       - targets:
-          - locust-exporter:9646
+          - benchy:8080
+rule_files:
+  - /etc/prometheus/prometheus_rules.rules

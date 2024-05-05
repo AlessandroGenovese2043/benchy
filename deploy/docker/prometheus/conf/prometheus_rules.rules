@@ -1,0 +1,14 @@
+groups:
+  - name: benchy
+    rules:
+      - record: benchy_requests_per_second_in_the_last_hour
+        expr: rate(benchy_request[1h])
+
+      - record: benchy_avg_query_durations
+        expr: benchy_query_duration_sum / clamp_min(benchy_query_duration_count, 1)
+
+      - record: benchy_median_query_durations
+        expr: histogram_quantile(0.5, sum(rate(benchy_query_duration_bucket[5m])) by (le))
+
+      - record: benchy_90_quantile_query_durations
+        expr: histogram_quantile(0.9, sum(rate(benchy_query_duration_bucket[5m])) by (le))
