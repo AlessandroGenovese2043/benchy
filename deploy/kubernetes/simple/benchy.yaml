@@ -16,11 +16,16 @@ spec:
     spec:
       containers:
         - name: benchy
-          image: quay.io/massigollo/benchy:latest
+          image: alegeno/docker_benchy:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           args: ["simple", "-p", "8080"]
+          env:
+            - name: BenchyPodID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
           resources:
             limits:
               cpu: 100m
@@ -34,12 +39,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: benchy
+  name: benchy-service
+  labels:
+    app: benchy
 spec:
   selector:
     app: benchy
   ports:
-    - protocol: TCP
+    - name: metrics
       port: 8080
       targetPort: 8080
+      protocol: TCP
   type: ClusterIP

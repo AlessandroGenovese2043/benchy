@@ -30,6 +30,7 @@ var simpleCmd = cobra.Command{
 		r.GET("/cpu", simple.CpuTaskHandler)
 		r.GET("/cpuintensive", simple.CpuIntensiveTaskHandler)
 		r.GET("/mem", simple.MemTaskHandler)
+		r.GET("/metrics", simple.PrometheusHandler)
 
 		s := &http.Server{
 			Addr:           ":8080",

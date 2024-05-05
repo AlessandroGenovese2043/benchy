@@ -25,11 +25,12 @@ services:
     environment:
       - PORT=8080
       - OTLP_ENDPOINT=otel-collector:4317
+      - BenchyPodID=1
     command:
       - simple
 
   loadgen:
-    image: quay.io/massigollo/benchy:load
+    image: alegeno/docker_loadgen:latest
     ports:
         - "8089:8089"
     environment:
@@ -47,7 +48,9 @@ services:
       - --web.enable-lifecycle
       - --storage.tsdb.retention.time=15d
     volumes:
+      - prometheus_data:/prometheus
       - ./prometheus/conf/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/conf/prometheus_rules.rules:/etc/prometheus/prometheus_rules.rules
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.46.0
@@ -73,6 +76,7 @@ services:
 
 volumes:
   grafana_data: {}
+  prometheus_data:
 #  kafka:
 #    extends:
 #      service: kafka
