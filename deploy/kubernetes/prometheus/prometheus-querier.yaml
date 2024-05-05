@@ -1,0 +1,48 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: monitoring
+  name: querier-service
+  labels:
+    app: querier-service
+spec:
+  ports:
+    - name: querier-port
+      protocol: TCP
+      port: 50055
+      targetPort: 50055
+  selector:
+    app: querier
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: querier-deployment
+  namespace: monitoring
+  labels:
+    app: querier-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: querier
+  template:
+    metadata:
+      labels:
+        app: querier
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: querier
+          image: alegeno/querier_service_image:latest
+          imagePullPolicy: Always
+          ports:
+            - name: querier-port
+              containerPort: 50055
+          resources:
+            requests:
+              cpu: 150m
+              memory: 256Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi
